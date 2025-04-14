@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Câu Hỏi Từ File Word</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --light-color: #f4f4f4;
+            --dark-color: #333;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        .file-input-container {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .file-input-button {
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .file-input-button:hover {
+            border-color: var(--primary-color);
+            background-color: #f0f8ff;
+        }
+
+        .file-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn {
+            font-size: 1.2rem;
+            padding: 0.8rem 1.5rem;
+            margin: 1rem 0;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .message {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .message-success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--success-color);
+            color: #27ae60;
+        }
+
+        .message-error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger-color);
+            color: #c0392b;
+        }
+
+        .message-info {
+            background-color: rgba(52, 152, 219, 0.2);
+            border: 1px solid var(--primary-color);
+            color: #2980b9;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            margin: 1rem 0;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: var(--primary-color);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s;
+            text-align: center;
+            line-height: 20px;
+            color: white;
+        }
+
+        .questions-preview {
+            margin-top: 2rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .question-item {
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .question-item:last-child {
+            border-bottom: none;
+        }
+
+        .question-text {
+            font-weight: bold;
+        }
+
+        .option {
+            margin-left: 1rem;
+        }
+
+        .correct-answer {
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-buttons .btn {
+            width: 48%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .btn {
+                font-size: 1rem;
+                padding: 0.7rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Import Câu Hỏi Từ File Word</h1>
+        
+        <div id="message" class="message hide"></div>
+        
+        <div class="form-group">
+            <label for="word-file">Chọn file Word (.docx) chứa câu hỏi trắc nghiệm:</label>
+            <div class="file-input-container">
+                <div class="file-input-button" id="file-input-label">
+                    <i class="fas fa-file-upload"></i>
+                    <span id="file-name">Kéo thả file vào đây hoặc nhấp để chọn file</span>
+                </div>
+                <input type="file" id="word-file" class="file-input" accept=".docx">
+            </div>
+            <p class="form-text">File Word phải có định dạng: Câu hỏi, sau đó là các đáp án A, B, C, D với đáp án đúng được in đậm.</p>
+        </div>
+        
+        <div id="progress-container" class="progress-container hide">
+            <div id="progress-bar" class="progress-bar">0%</div>
+        </div>
+        
+        <button id="import-btn" class="btn btn-success" disabled>Import Câu Hỏi</button>
+        
+        <div id="questions-preview" class="questions-preview hide">
+            <h3>Xem trước câu hỏi đã import</h3>
+            <div id="questions-list"></div>
+        </div>
+        
+        <div class="nav-buttons">
+            <a href="index.html" class="btn">Quay Lại Trang Chính</a>
+            <button id="save-btn" class="btn" disabled>Lưu Câu Hỏi</button>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const fileInput = document.getElementById('word-file');
+            const fileInputLabel = document.getElementById('file-input-label');
+            const fileName = document.getElementById('file-name');
+            const importBtn = document.getElementById('import-btn');
+            const saveBtn = document.getElementById('save-btn');
+            const messageElement = document.getElementById('message');
+            const progressContainer = document.getElementById('progress-container');
+            const progressBar = document.getElementById('progress-bar');
+            const questionsPreview = document.getElementById('questions-preview');
+            const questionsList = document.getElementById('questions-list');
+            
+            let extractedQuestions = [];
+            
+            // Xử lý sự kiện chọn file
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    fileName.textContent = file.name;
+                    importBtn.disabled = false;
+                    showMessage('File đã được chọn. Nhấn "Import Câu Hỏi" để bắt đầu xử lý.', 'info');
+                } else {
+                    fileName.textContent = 'Kéo thả file vào đây hoặc nhấp để chọn file';
+                    importBtn.disabled = true;
+                }
+            });
+            
+            // Xử lý sự kiện import câu hỏi
+            importBtn.addEventListener('click', async () => {
+                const file = fileInput.files[0];
+                if (!file) {
+                    showMessage('Vui lòng chọn file Word (.docx)', 'error');
+                    return;
+                }
+                
+                try {
+                    // Hiển thị thanh tiến trình
+                    progressContainer.classList.remove('hide');
+                    progressBar.style.width = '10%';
+                    progressBar.textContent = '10%';
+                    
+                    // Đọc file Word
+                    showMessage('Đang xử lý file Word...', 'info');
+                    
+                    // Sử dụng mammoth.js để chuyển đổi Word sang HTML
+                    const arrayBuffer = await file.arrayBuffer();
+                    progressBar.style.width = '30%';
+                    progressBar.textContent = '30%';
+                    
+                    const result = await mammoth.convertToHtml({ arrayBuffer });
+                    const html = result.value;
+                    progressBar.style.width = '50%';
+                    progressBar.textContent = '50%';
+                    
+                    // Phân tích HTML để trích xuất câu hỏi
+                    extractedQuestions = extractQuestionsFromHtml(html);
+                    progressBar.style.width = '80%';
+                    progressBar.textContent = '80%';
+                    
+                    // Hiển thị xem trước câu hỏi
+                    displayQuestionsPreview(extractedQuestions);
+                    progressBar.style.width = '100%';
+                    progressBar.textContent = '100%';
+                    
+                    // Hiển thị thông báo thành công
+                    showMessage(`Đã trích xuất ${extractedQuestions.length} câu hỏi từ file Word.`, 'success');
+                    saveBtn.disabled = false;
+                    
+                } catch (error) {
+                    console.error('Lỗi khi xử lý file Word:', error);
+                    showMessage('Có lỗi xảy ra khi xử lý file Word. Vui lòng kiểm tra định dạng file.', 'error');
+                    progressContainer.classList.add('hide');
+                }
+            });
+            
+            // Xử lý sự kiện lưu câu hỏi
+            saveBtn.addEventListener('click', () => {
+                if (extractedQuestions.length === 0) {
+                    showMessage('Không có câu hỏi nào để lưu.', 'error');
+                    return;
+                }
+                
+                try {
+                    // Lấy câu hỏi hiện có từ localStorage
+                    const existingQuestions = JSON.parse(localStorage.getItem('customQuestions')) || [];
+                    
+                    // Thêm câu hỏi mới
+                    const updatedQuestions = [...existingQuestions, ...extractedQuestions];
+                    
+                    // Lưu vào localStorage
+                    localStorage.setItem('customQuestions', JSON.stringify(updatedQuestions));
+                    
+                    // Hiển thị thông báo thành công
+                    showMessage(`Đã lưu ${extractedQuestions.length} câu hỏi vào bộ câu hỏi tự thêm.`, 'success');
+                    
+                    // Tạo file JSON để tải xuống
+                    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(extractedQuestions, null, 2));
+                    const downloadAnchorNode = document.createElement('a');
+                    downloadAnchorNode.setAttribute("href", dataStr);
+                    downloadAnchorNode.setAttribute("download", "imported_questions.json");
+                    document.body.appendChild(downloadAnchorNode);
+                    downloadAnchorNode.click();
+                    downloadAnchorNode.remove();
+                    
+                } catch (error) {
+                    console.error('Lỗi khi lưu câu hỏi:', error);
+                    showMessage('Có lỗi xảy ra khi lưu câu hỏi.', 'error');
+                }
+            });
+            
+            // Hàm trích xuất câu hỏi từ HTML
+            function extractQuestionsFromHtml(html) {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const paragraphs = doc.querySelectorAll('p');
+                
+                const questions = [];
+                let currentQuestion = null;
+                let questionId = Date.now();
+                
+                for (let i = 0; i < paragraphs.length; i++) {
+                    const paragraph = paragraphs[i];
+                    const text = paragraph.textContent.trim();
+                    
+                    if (!text) continue;
+                    
+                    // Kiểm tra xem đây có phải là câu hỏi mới không
+                    const questionMatch = text.match(/^(\d+)\.\s+(.+)$/);
+                    if (questionMatch) {
+                        // Lưu câu hỏi trước đó nếu có
+                        if (currentQuestion && currentQuestion.options.A) {
+                            questions.push(currentQuestion);
+                        }
+                        
+                        // Bắt đầu câu hỏi mới
+                        currentQuestion = {
+                            id: questionId++,
+                            question: questionMatch[2],
+                            options: {},
+                            correctAnswer: null,
+                            source: "Imported from Word"
+                        };
+                        continue;
+                    }
+                    
+                    // Kiểm tra xem đây có phải là lựa chọn không
+                    const optionMatch = text.match(/^([A-D])\.\s+(.+)$/);
+                    if (optionMatch && currentQuestion) {
+                        const optionLetter = optionMatch[1];
+                        const optionText = optionMatch[2];
+                        
+                        // Kiểm tra xem đáp án này có phải là đáp án đúng không (in đậm)
+                        const isBold = paragraph.querySelector('strong, b') !== null;
+                        
+                        currentQuestion.options[optionLetter] = optionText;
+                        
+                        if (isBold) {
+                            currentQuestion.correctAnswer = optionLetter;
+                        }
+                    }
+                }
+                
+                // Thêm câu hỏi cuối cùng nếu có
+                if (currentQuestion && currentQuestion.options.A) {
+                    questions.push(currentQuestion);
+                }
+                
+                return questions;
+            }
+            
+            // Hàm hiển thị xem trước câu hỏi
+            function displayQuestionsPreview(questions) {
+                questionsList.innerHTML = '';
+                
+                if (questions.length === 0) {
+                    questionsList.innerHTML = '<p>Không tìm thấy câu hỏi nào trong file.</p>';
+                    questionsPreview.classList.remove('hide');
+                    return;
+                }
+                
+                // Hiển thị tối đa 10 câu hỏi đầu tiên
+                const previewQuestions = questions.slice(0, 10);
+                
+                previewQuestions.forEach((question, index) => {
+                    const questionItem = document.createElement('div');
+                    questionItem.className = 'question-item';
+                    
+                    const questionText = document.createElement('p');
+                    questionText.className = 'question-text';
+                    questionText.textContent = `${index + 1}. ${question.question}`;
+                    questionItem.appendChild(questionText);
+                    
+                    for (const [letter, text] of Object.entries(question.options)) {
+                        const option = document.createElement('p');
+                        option.className = 'option';
+                        if (letter === question.correctAnswer) {
+                            option.className += ' correct-answer';
+                        }
+                        option.textContent = `${letter}. ${text}`;
+                        questionItem.appendChild(option);
+                    }
+                    
+                    questionsList.appendChild(questionItem);
+                });
+                
+                if (questions.length > 10) {
+                    const moreInfo = document.createElement('p');
+                    moreInfo.textContent = `... và ${questions.length - 10} câu hỏi khác`;
+                    questionsList.appendChild(moreInfo);
+                }
+                
+                questionsPreview.classList.remove('hide');
+            }
+            
+            // Hàm hiển thị thông báo
+            function showMessage(text, type) {
+                messageElement.textContent = text;
+                messageElement.className = `message message-${type}`;
+                
+                // Ẩn thông báo sau 5 giây nếu là thông báo thành công
+                if (type === 'success') {
+                    setTimeout(() => {
+                        messageElement.className = 'message hide';
+                    }, 5000);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

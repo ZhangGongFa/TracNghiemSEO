@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trắc Nghiệm SEO</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="container">
+        <div id="home" class="flex-center flex-column">
+            <h1>Trắc Nghiệm SEO</h1>
+            <p>Kiểm tra kiến thức SEO của bạn với các câu hỏi trắc nghiệm</p>
+            <div class="question-source">
+                <label for="question-source-select">Chọn nguồn câu hỏi:</label>
+                <select id="question-source-select">
+                    <option value="original">Câu hỏi gốc (88 câu)</option>
+                    <option value="word">Câu hỏi từ tài liệu Word (700 câu)</option>
+                    <option value="custom">Câu hỏi tự thêm</option>
+                    <option value="all">Tất cả câu hỏi</option>
+                </select>
+            </div>
+            <button id="start-btn" class="btn">Bắt Đầu Làm Bài</button>
+            <div class="action-buttons">
+                <a href="add_question.html" class="btn btn-secondary">Thêm Câu Hỏi Mới</a>
+                <a href="import_word.html" class="btn btn-secondary">Import Từ File Word</a>
+            </div>
+            <div class="info">
+                <p>- Khi làm sai, bạn sẽ được chọn lại đến khi đúng</p>
+                <p>- Sau khi hoàn thành, bạn có thể làm lại từ đầu hoặc chỉ làm lại các câu đã làm sai</p>
+            </div>
+        </div>
+
+        <div id="quiz" class="hide">
+            <div id="hud">
+                <div class="hud-item">
+                    <p id="progressText" class="hud-prefix">Câu hỏi</p>
+                    <div id="progressBar">
+                        <div id="progressBarFull"></div>
+                    </div>
+                </div>
+            </div>
+            <h2 id="question">Nội dung câu hỏi</h2>
+            <div class="choice-container">
+                <p class="choice-prefix">A</p>
+                <p class="choice-text" data-option="A">Đáp án A</p>
+            </div>
+            <div class="choice-container">
+                <p class="choice-prefix">B</p>
+                <p class="choice-text" data-option="B">Đáp án B</p>
+            </div>
+            <div class="choice-container">
+                <p class="choice-prefix">C</p>
+                <p class="choice-text" data-option="C">Đáp án C</p>
+            </div>
+            <div class="choice-container">
+                <p class="choice-prefix">D</p>
+                <p class="choice-text" data-option="D">Đáp án D</p>
+            </div>
+            <div id="feedback" class="hide">
+                <p id="feedback-text"></p>
+                <button id="next-btn" class="btn hide">Câu Tiếp Theo</button>
+            </div>
+        </div>
+
+        <div id="end" class="flex-center flex-column hide">
+            <h1>Kết Quả</h1>
+            <p id="final-score">Bạn đã hoàn thành tất cả câu hỏi!</p>
+            <p id="wrong-count"></p>
+            <div id="wrong-questions" class="hide">
+                <h3>Các câu hỏi đã làm sai:</h3>
+                <ul id="wrong-questions-list"></ul>
+            </div>
+            <div class="end-buttons">
+                <button id="restart-btn" class="btn">Làm Lại Từ Đầu</button>
+                <button id="retry-wrong-btn" class="btn">Làm Lại Các Câu Sai</button>
+                <a href="index.html" class="btn btn-secondary">Quay Lại Trang Chủ</a>
+            </div>
+        </div>
+    </div>
+    <script src="js/questions.js"></script>
+    <script src="js/word_questions.js"></script>
+    <script src="js/quiz.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

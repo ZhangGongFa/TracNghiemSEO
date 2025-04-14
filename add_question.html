@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Câu Hỏi Trắc Nghiệm SEO</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2980b9;
+            --success-color: #2ecc71;
+            --danger-color: #e74c3c;
+            --light-color: #f4f4f4;
+            --dark-color: #333;
+            --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        h1, h2, h3 {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: var(--font-family);
+            font-size: 1rem;
+        }
+
+        textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .options-container {
+            margin-bottom: 1rem;
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .option-label {
+            min-width: 30px;
+            font-weight: bold;
+        }
+
+        .option-input {
+            flex-grow: 1;
+        }
+
+        .correct-option {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .btn {
+            font-size: 1.2rem;
+            padding: 0.8rem 1.5rem;
+            margin: 1rem 0;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .message {
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .message-success {
+            background-color: rgba(46, 204, 113, 0.2);
+            border: 1px solid var(--success-color);
+            color: #27ae60;
+        }
+
+        .message-error {
+            background-color: rgba(231, 76, 60, 0.2);
+            border: 1px solid var(--danger-color);
+            color: #c0392b;
+        }
+
+        .hide {
+            display: none;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .nav-buttons .btn {
+            width: 48%;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .btn {
+                font-size: 1rem;
+                padding: 0.7rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thêm Câu Hỏi Trắc Nghiệm SEO</h1>
+        
+        <div id="message" class="message hide"></div>
+        
+        <form id="question-form">
+            <div class="form-group">
+                <label for="question">Câu hỏi:</label>
+                <textarea id="question" name="question" required></textarea>
+            </div>
+            
+            <div class="options-container">
+                <div class="option-group">
+                    <span class="option-label">A:</span>
+                    <input type="text" id="optionA" name="optionA" class="option-input" required>
+                    <input type="radio" name="correctOption" value="A" class="correct-option" required>
+                </div>
+                
+                <div class="option-group">
+                    <span class="option-label">B:</span>
+                    <input type="text" id="optionB" name="optionB" class="option-input" required>
+                    <input type="radio" name="correctOption" value="B" class="correct-option">
+                </div>
+                
+                <div class="option-group">
+                    <span class="option-label">C:</span>
+                    <input type="text" id="optionC" name="optionC" class="option-input" required>
+                    <input type="radio" name="correctOption" value="C" class="correct-option">
+                </div>
+                
+                <div class="option-group">
+                    <span class="option-label">D:</span>
+                    <input type="text" id="optionD" name="optionD" class="option-input" required>
+                    <input type="radio" name="correctOption" value="D" class="correct-option">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="source">Nguồn (tùy chọn):</label>
+                <input type="text" id="source" name="source" placeholder="Ví dụ: Sách SEO, Website,...">
+            </div>
+            
+            <button type="submit" class="btn btn-success">Thêm Câu Hỏi</button>
+        </form>
+        
+        <div class="nav-buttons">
+            <a href="index.html" class="btn">Quay Lại Trang Chính</a>
+            <button id="download-btn" class="btn btn-primary">Tải Xuống Câu Hỏi</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questionForm = document.getElementById('question-form');
+            const messageElement = document.getElementById('message');
+            const downloadBtn = document.getElementById('download-btn');
+            
+            // Tải câu hỏi từ localStorage nếu có
+            let questions = JSON.parse(localStorage.getItem('customQuestions')) || [];
+            
+            // Xử lý sự kiện submit form
+            questionForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Lấy giá trị từ form
+                const questionText = document.getElementById('question').value.trim();
+                const optionA = document.getElementById('optionA').value.trim();
+                const optionB = document.getElementById('optionB').value.trim();
+                const optionC = document.getElementById('optionC').value.trim();
+                const optionD = document.getElementById('optionD').value.trim();
+                const correctOption = document.querySelector('input[name="correctOption"]:checked').value;
+                const source = document.getElementById('source').value.trim() || 'Thêm thủ công';
+                
+                // Tạo đối tượng câu hỏi mới
+                const newQuestion = {
+                    id: Date.now(), // Sử dụng timestamp làm ID
+                    question: questionText,
+                    options: {
+                        A: optionA,
+                        B: optionB,
+                        C: optionC,
+                        D: optionD
+                    },
+                    correctAnswer: correctOption,
+                    source: source
+                };
+                
+                // Thêm câu hỏi mới vào mảng
+                questions.push(newQuestion);
+                
+                // Lưu vào localStorage
+                localStorage.setItem('customQuestions', JSON.stringify(questions));
+                
+                // Hiển thị thông báo thành công
+                showMessage('Đã thêm câu hỏi thành công!', 'success');
+                
+                // Reset form
+                questionForm.reset();
+            });
+            
+            // Xử lý sự kiện tải xuống câu hỏi
+            downloadBtn.addEventListener('click', () => {
+                if (questions.length === 0) {
+                    showMessage('Chưa có câu hỏi nào được thêm!', 'error');
+                    return;
+                }
+                
+                // Tạo file JSON để tải xuống
+                const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(questions, null, 2));
+                const downloadAnchorNode = document.createElement('a');
+                downloadAnchorNode.setAttribute("href", dataStr);
+                downloadAnchorNode.setAttribute("download", "custom_questions.json");
+                document.body.appendChild(downloadAnchorNode);
+                downloadAnchorNode.click();
+                downloadAnchorNode.remove();
+                
+                showMessage('Đã tải xuống câu hỏi thành công!', 'success');
+            });
+            
+            // Hàm hiển thị thông báo
+            function showMessage(text, type) {
+                messageElement.textContent = text;
+                messageElement.className = `message message-${type}`;
+                
+                // Ẩn thông báo sau 3 giây
+                setTimeout(() => {
+                    messageElement.className = 'message hide';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
